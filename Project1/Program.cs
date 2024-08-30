@@ -1,9 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Project1.Controllers;
+using Project1.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Register the DbContext with dependency injection
+builder.Services.AddDbContext<AirlineDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add services for OpenAPI/Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,6 +28,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// Map API endpoints
 app.MapControllers();
 
 app.Run();
