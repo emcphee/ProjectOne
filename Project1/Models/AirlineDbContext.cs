@@ -94,20 +94,6 @@ public partial class AirlineDbContext : DbContext
             entity.Property(e => e.PilotId).HasColumnName("pilot_id");
             entity.Property(e => e.RemainingSeats).HasColumnName("remaining_seats");
 
-            entity.HasOne(d => d.ArrivalAirport).WithMany(p => p.FlightArrivalAirports)
-                .HasForeignKey(d => d.ArrivalAirportId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Flights__arrival__5224328E");
-
-            entity.HasOne(d => d.DepartureAirport).WithMany(p => p.FlightDepartureAirports)
-                .HasForeignKey(d => d.DepartureAirportId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Flights__departu__51300E55");
-
-            entity.HasOne(d => d.Pilot).WithMany(p => p.Flights)
-                .HasForeignKey(d => d.PilotId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Flights__pilot_i__531856C7");
         });
 
         modelBuilder.Entity<FlightDetailsView>(entity =>
@@ -178,15 +164,6 @@ public partial class AirlineDbContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Tickets__custome__58D1301D");
-
-            entity.HasOne(d => d.Flight).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.FlightId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Tickets__flight___57DD0BE4");
         });
 
         OnModelCreatingPartial(modelBuilder);

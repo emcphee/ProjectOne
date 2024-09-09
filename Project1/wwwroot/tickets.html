@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets CRUD</title>
+</head>
+<body>
+
+    <!-- GET Request Form -->
+    <h3>GET Ticket</h3>
+    <form id="getTicketForm">
+        <label for="getTicketId">TicketId:</label>
+        <input type="number" id="getTicketId" name="TicketId">
+        <button type="button" onclick="submitTicketGet()">Get Ticket</button>
+    </form>
+    <pre id="getTicketResult"></pre>
+
+    <!-- POST Request Form -->
+    <h3>POST Ticket</h3>
+    <form id="postTicketForm">
+        <label for="postFlightId">FlightId:</label>
+        <input type="number" id="postFlightId" name="FlightId">
+        <br>
+        <label for="postCustomerId">CustomerId:</label>
+        <input type="number" id="postCustomerId" name="CustomerId">
+        <br>
+        <label for="postBookingDate">BookingDate:</label>
+        <input type="datetime-local" id="postBookingDate" name="BookingDate">
+        <br>
+        <label for="postPrice">Price:</label>
+        <input type="number" id="postPrice" name="Price" step="0.01">
+        <br>
+        <button type="button" onclick="submitTicketPost()">Create Ticket</button>
+    </form>
+    <pre id="postTicketResult"></pre>
+
+    <!-- PUT Request Form -->
+    <h3>PUT Ticket</h3>
+    <form id="putTicketForm">
+        <label for="putTicketId">TicketId:</label>
+        <input type="number" id="putTicketId" name="TicketId">
+        <br>
+        <label for="putFlightId">FlightId:</label>
+        <input type="number" id="putFlightId" name="FlightId">
+        <br>
+        <label for="putCustomerId">CustomerId:</label>
+        <input type="number" id="putCustomerId" name="CustomerId">
+        <br>
+        <label for="putBookingDate">BookingDate:</label>
+        <input type="datetime-local" id="putBookingDate" name="BookingDate">
+        <br>
+        <label for="putPrice">Price:</label>
+        <input type="number" id="putPrice" name="Price" step="0.01">
+        <br>
+        <button type="button" onclick="submitTicketPut()">Update Ticket</button>
+    </form>
+
+    <!-- DELETE Request Form -->
+    <h3>DELETE Ticket</h3>
+    <form id="deleteTicketForm">
+        <label for="deleteTicketId">TicketId:</label>
+        <input type="number" id="deleteTicketId" name="TicketId">
+        <br>
+        <button type="button" onclick="submitTicketDelete()">Delete Ticket</button>
+    </form>
+
+    <script>
+        // GET Ticket
+        async function submitTicketGet() {
+            const ticketId = document.getElementById('getTicketId').value;
+            try {
+                const response = await fetch(`/api/Tickets/${ticketId}`);
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('getTicketResult').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('getTicketResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        // POST Ticket
+        async function submitTicketPost() {
+            const flightId = document.getElementById('postFlightId').value;
+            const customerId = document.getElementById('postCustomerId').value;
+            const bookingDate = document.getElementById('postBookingDate').value;
+            const price = document.getElementById('postPrice').value;
+
+            try {
+                const response = await fetch('/api/Tickets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        FlightId: flightId,
+                        CustomerId: customerId,
+                        BookingDate: bookingDate,
+                        Price: price
+                    })
+                });
+
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('postTicketResult').textContent = 'Ticket created: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('postTicketResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        // PUT Ticket
+        async function submitTicketPut() {
+            const ticketId = document.getElementById('putTicketId').value;
+            const flightId = document.getElementById('putFlightId').value;
+            const customerId = document.getElementById('putCustomerId').value;
+            const bookingDate = document.getElementById('putBookingDate').value;
+            const price = document.getElementById('putPrice').value;
+
+            try {
+                const response = await fetch(`/api/Tickets/${ticketId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        TicketId: ticketId,
+                        FlightId: flightId,
+                        CustomerId: customerId,
+                        BookingDate: bookingDate,
+                        Price: price
+                    })
+                });
+
+                if (response.status === 204) {
+                    alert('Ticket updated successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Ticket updated successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+
+        // DELETE Ticket
+        async function submitTicketDelete() {
+            const ticketId = document.getElementById('deleteTicketId').value;
+
+            try {
+                const response = await fetch(`/api/Tickets/${ticketId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.status === 204) {
+                    alert('Ticket deleted successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Ticket deleted successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+    </script>
+
+</body>
+</html>

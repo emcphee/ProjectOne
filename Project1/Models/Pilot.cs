@@ -16,6 +16,4 @@ public partial class Pilot
     public int ExperienceYears { get; set; }
 
     public int NumberOfFlights { get; set; }
-
-    public virtual ICollection<Flight> Flights { get; set; } = new List<Flight>();
 }

@@ -14,8 +14,4 @@ public partial class Ticket
     public DateTime BookingDate { get; set; }
 
     public decimal Price { get; set; }
-
-    public virtual Customer Customer { get; set; } = null!;
-
-    public virtual Flight Flight { get; set; } = null!;
 }

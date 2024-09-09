@@ -20,12 +20,4 @@ public partial class Flight
     public int PilotId { get; set; }
 
     public int RemainingSeats { get; set; }
-
-    public virtual Airport ArrivalAirport { get; set; } = null!;
-
-    public virtual Airport DepartureAirport { get; set; } = null!;
-
-    public virtual Pilot Pilot { get; set; } = null!;
-
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }
