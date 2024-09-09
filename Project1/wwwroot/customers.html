@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers CRUD</title>
+</head>
+<body>
+
+    <!-- GET Request Form -->
+    <h3>GET Customer</h3>
+    <form id="getCustomerForm">
+        <label for="getCustomerId">CustomerId:</label>
+        <input type="number" id="getCustomerId" name="CustomerId">
+        <button type="button" onclick="submitCustomerGet()">Get Customer</button>
+    </form>
+    <pre id="getCustomerResult"></pre>
+
+    <!-- POST Request Form -->
+    <h3>POST Customer</h3>
+    <form id="postCustomerForm">
+        <label for="postNumFlights">NumFlights:</label>
+        <input type="number" id="postNumFlights" name="NumFlights">
+        <br>
+        <button type="button" onclick="submitCustomerPost()">Create Customer</button>
+    </form>
+    <pre id="postCustomerResult"></pre>
+
+    <!-- PUT Request Form -->
+    <h3>PUT Customer</h3>
+    <form id="putCustomerForm">
+        <label for="putCustomerId">CustomerId:</label>
+        <input type="number" id="putCustomerId" name="CustomerId">
+        <br>
+        <label for="putNumFlights">NumFlights:</label>
+        <input type="number" id="putNumFlights" name="NumFlights">
+        <br>
+        <button type="button" onclick="submitCustomerPut()">Update Customer</button>
+    </form>
+
+    <!-- DELETE Request Form -->
+    <h3>DELETE Customer</h3>
+    <form id="deleteCustomerForm">
+        <label for="deleteCustomerId">CustomerId:</label>
+        <input type="number" id="deleteCustomerId" name="CustomerId">
+        <br>
+        <button type="button" onclick="submitCustomerDelete()">Delete Customer</button>
+    </form>
+
+    <script>
+        // GET Customer
+        async function submitCustomerGet() {
+            const customerId = document.getElementById('getCustomerId').value;
+            try {
+                const response = await fetch(`/api/Customers/${customerId}`);
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('getCustomerResult').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('getCustomerResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        // POST Customer
+        async function submitCustomerPost() {
+            const numFlights = document.getElementById('postNumFlights').value;
+
+            try {
+                const response = await fetch('/api/Customers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        NumFlights: numFlights
+                    })
+                });
+
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('postCustomerResult').textContent = 'Customer created: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('postCustomerResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        // PUT Customer
+        async function submitCustomerPut() {
+            const customerId = document.getElementById('putCustomerId').value;
+            const numFlights = document.getElementById('putNumFlights').value;
+
+            try {
+                const response = await fetch(`/api/Customers/${customerId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        CustomerId: customerId,
+                        NumFlights: numFlights
+                    })
+                });
+
+                if (response.status === 204) {
+                    alert('Customer updated successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Customer updated successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+
+        // DELETE Customer
+        async function submitCustomerDelete() {
+            const customerId = document.getElementById('deleteCustomerId').value;
+
+            try {
+                const response = await fetch(`/api/Customers/${customerId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.status === 204) {
+                    alert('Customer deleted successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Customer deleted successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+    </script>
+
+</body>
+</html>

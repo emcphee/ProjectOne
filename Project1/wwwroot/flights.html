@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flights CRUD</title>
+</head>
+<body>
+
+    <!-- GET Request Form -->
+    <h3>GET Flight</h3>
+    <form id="getFlightForm">
+        <label for="getFlightId">FlightId:</label>
+        <input type="number" id="getFlightId" name="FlightId">
+        <button type="button" onclick="submitFlightGet()">Get Flight</button>
+    </form>
+    <pre id="getFlightResult"></pre>
+
+    <!-- POST Request Form -->
+    <h3>POST Flight</h3>
+    <form id="postFlightForm">
+        <label for="postFlightNumber">FlightNumber:</label>
+        <input type="text" id="postFlightNumber" name="FlightNumber">
+        <br>
+        <label for="postDepartureAirportId">DepartureAirportId:</label>
+        <input type="number" id="postDepartureAirportId" name="DepartureAirportId">
+        <br>
+        <label for="postArrivalAirportId">ArrivalAirportId:</label>
+        <input type="number" id="postArrivalAirportId" name="ArrivalAirportId">
+        <br>
+        <label for="postDepartureTime">DepartureTime:</label>
+        <input type="datetime-local" id="postDepartureTime" name="DepartureTime">
+        <br>
+        <label for="postArrivalTime">ArrivalTime:</label>
+        <input type="datetime-local" id="postArrivalTime" name="ArrivalTime">
+        <br>
+        <label for="postPilotId">PilotId:</label>
+        <input type="number" id="postPilotId" name="PilotId">
+        <br>
+        <label for="postRemainingSeats">RemainingSeats:</label>
+        <input type="number" id="postRemainingSeats" name="RemainingSeats">
+        <br>
+        <button type="button" onclick="submitFlightPost()">Create Flight</button>
+    </form>
+    <pre id="postFlightResult"></pre>
+
+    <!-- PUT Request Form -->
+    <h3>PUT Flight</h3>
+    <form id="putFlightForm">
+        <label for="putFlightId">FlightId:</label>
+        <input type="number" id="putFlightId" name="FlightId">
+        <br>
+        <label for="putFlightNumber">FlightNumber:</label>
+        <input type="text" id="putFlightNumber" name="FlightNumber">
+        <br>
+        <label for="putDepartureAirportId">DepartureAirportId:</label>
+        <input type="number" id="putDepartureAirportId" name="DepartureAirportId">
+        <br>
+        <label for="putArrivalAirportId">ArrivalAirportId:</label>
+        <input type="number" id="putArrivalAirportId" name="ArrivalAirportId">
+        <br>
+        <label for="putDepartureTime">DepartureTime:</label>
+        <input type="datetime-local" id="putDepartureTime" name="DepartureTime">
+        <br>
+        <label for="putArrivalTime">ArrivalTime:</label>
+        <input type="datetime-local" id="putArrivalTime" name="ArrivalTime">
+        <br>
+        <label for="putPilotId">PilotId:</label>
+        <input type="number" id="putPilotId" name="PilotId">
+        <br>
+        <label for="putRemainingSeats">RemainingSeats:</label>
+        <input type="number" id="putRemainingSeats" name="RemainingSeats">
+        <br>
+        <button type="button" onclick="submitFlightPut()">Update Flight</button>
+    </form>
+
+    <!-- DELETE Request Form -->
+    <h3>DELETE Flight</h3>
+    <form id="deleteFlightForm">
+        <label for="deleteFlightId">FlightId:</label>
+        <input type="number" id="deleteFlightId" name="FlightId">
+        <br>
+        <button type="button" onclick="submitFlightDelete()">Delete Flight</button>
+    </form>
+
+    <script>
+        // GET Flight
+        async function submitFlightGet() {
+            const flightId = document.getElementById('getFlightId').value;
+            try {
+                const response = await fetch(`/api/Flights/${flightId}`);
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('getFlightResult').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('getFlightResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        // POST Flight
+        async function submitFlightPost() {
+            const flightNumber = document.getElementById('postFlightNumber').value;
+            const departureAirportId = document.getElementById('postDepartureAirportId').value;
+            const arrivalAirportId = document.getElementById('postArrivalAirportId').value;
+            const departureTime = document.getElementById('postDepartureTime').value;
+            const arrivalTime = document.getElementById('postArrivalTime').value;
+            const pilotId = document.getElementById('postPilotId').value;
+            const remainingSeats = document.getElementById('postRemainingSeats').value;
+
+            try {
+                const response = await fetch('/api/Flights', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        FlightNumber: flightNumber,
+                        DepartureAirportId: departureAirportId,
+                        ArrivalAirportId: arrivalAirportId,
+                        DepartureTime: departureTime,
+                        ArrivalTime: arrivalTime,
+                        PilotId: pilotId,
+                        RemainingSeats: remainingSeats
+                    })
+                });
+
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('postFlightResult').textContent = 'Flight created: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('postFlightResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        // PUT Flight
+        async function submitFlightPut() {
+            const flightId = document.getElementById('putFlightId').value;
+            const flightNumber = document.getElementById('putFlightNumber').value;
+            const departureAirportId = document.getElementById('putDepartureAirportId').value;
+            const arrivalAirportId = document.getElementById('putArrivalAirportId').value;
+            const departureTime = document.getElementById('putDepartureTime').value;
+            const arrivalTime = document.getElementById('putArrivalTime').value;
+            const pilotId = document.getElementById('putPilotId').value;
+            const remainingSeats = document.getElementById('putRemainingSeats').value;
+
+            try {
+                const response = await fetch(`/api/Flights/${flightId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        FlightId: flightId,
+                        FlightNumber: flightNumber,
+                        DepartureAirportId: departureAirportId,
+                        ArrivalAirportId: arrivalAirportId,
+                        DepartureTime: departureTime,
+                        ArrivalTime: arrivalTime,
+                        PilotId: pilotId,
+                        RemainingSeats: remainingSeats
+                    })
+                });
+
+                if (response.status === 204) {
+                    alert('Flight updated successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Flight updated successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+
+        // DELETE Flight
+        async function submitFlightDelete() {
+            const flightId = document.getElementById('deleteFlightId').value;
+
+            try {
+                const response = await fetch(`/api/Flights/${flightId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.status === 204) {
+                    alert('Flight deleted successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Flight deleted successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+﻿@page
+@model Project1_Frontend.Pages.AirportsModel
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airports CRUD</title>
+</head>
+<body>
+
+    <!-- GET Request Form -->
+    <h3>GET Airport</h3>
+    <form method="GET" action="/get-airport">
+        <label for="getAirportId">AirportId:</label>
+        <input type="number" id="getAirportId" name="AirportId">
+        <input type="submit" value="Get Airport">
+    </form>
+
+    <!-- POST Request Form -->
+    <h3>POST Airport</h3>
+    <form method="POST" action="/create-airport">
+        <label for="postAirportCode">AirportCode:</label>
+        <input type="text" id="postAirportCode" name="AirportCode">
+        <br>
+        <label for="postAirportName">AirportName:</label>
+        <input type="text" id="postAirportName" name="AirportName">
+        <br>
+        <label for="postCity">City:</label>
+        <input type="text" id="postCity" name="City">
+        <br>
+        <label for="postCountry">Country:</label>
+        <input type="text" id="postCountry" name="Country">
+        <br>
+        <label for="postImageURL">ImageURL:</label>
+        <input type="text" id="postImageURL" name="ImageURL">
+        <br>
+        <input type="submit" value="Create Airport">
+    </form>
+
+    <!-- PUT Request Form -->
+    <h3>PUT Airport</h3>
+    <form method="POST" action="/update-airport?_method=PUT">
+        <label for="putAirportId">AirportId:</label>
+        <input type="number" id="putAirportId" name="AirportId">
+        <br>
+        <label for="putAirportCode">AirportCode:</label>
+        <input type="text" id="putAirportCode" name="AirportCode">
+        <br>
+        <label for="putAirportName">AirportName:</label>
+        <input type="text" id="putAirportName" name="AirportName">
+        <br>
+        <label for="putCity">City:</label>
+        <input type="text" id="putCity" name="City">
+        <br>
+        <label for="putCountry">Country:</label>
+        <input type="text" id="putCountry" name="Country">
+        <br>
+        <label for="putImageURL">ImageURL:</label>
+        <input type="text" id="putImageURL" name="ImageURL">
+        <br>
+        <input type="submit" value="Update Airport">
+    </form>
+
+    <!-- PATCH Request Form -->
+    <h3>PATCH Airport</h3>
+    <form method="POST" action="/patch-airport?_method=PATCH">
+        <label for="patchAirportId">AirportId:</label>
+        <input type="number" id="patchAirportId" name="AirportId">
+        <br>
+        <label for="patchField">Field to Update:</label>
+        <select id="patchField" name="Field">
+            <option value="AirportCode">AirportCode</option>
+            <option value="AirportName">AirportName</option>
+            <option value="City">City</option>
+            <option value="Country">Country</option>
+            <option value="ImageURL">ImageURL</option>
+        </select>
+        <br>
+        <label for="patchValue">New Value:</label>
+        <input type="text" id="patchValue" name="Value">
+        <br>
+        <input type="submit" value="Patch Airport">
+    </form>
+
+    <!-- DELETE Request Form -->
+    <h3>DELETE Airport</h3>
+    <form method="POST" action="/delete-airport?_method=DELETE">
+        <label for="deleteAirportId">AirportId:</label>
+        <input type="number" id="deleteAirportId" name="AirportId">
+        <input type="submit" value="Delete Airport">
+    </form>
+
+</body>
+</html>

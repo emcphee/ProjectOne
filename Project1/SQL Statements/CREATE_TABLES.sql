@@ -27,9 +27,16 @@ CREATE TABLE Flights (
     departure_time DATETIME NOT NULL,
     arrival_time DATETIME NOT NULL,
     pilot_id INT NOT NULL,
+	remaining_seats INT NOT NULL,
     FOREIGN KEY (departure_airport_id) REFERENCES Airports(airport_id),
     FOREIGN KEY (arrival_airport_id) REFERENCES Airports(airport_id),
     FOREIGN KEY (pilot_id) REFERENCES Pilots(pilot_id)
+);
+
+-- Customers
+CREATE TABLE Customers (
+   customer_id INT IDENTITY PRIMARY KEY,
+   num_flights INT NOT NULL
 );
 
 -- Tickets table to store information about flight tickets
@@ -37,16 +44,8 @@ CREATE TABLE Tickets (
     ticket_id INT IDENTITY PRIMARY KEY,
     flight_id INT NOT NULL,
     customer_id INT NOT NULL,
-    seat_number VARCHAR(6) NOT NULL,
     booking_date DATETIME NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (flight_id) REFERENCES Flights(flight_id),
-    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
-);
-
--- API keys
-CREATE TABLE API_Keys (
-   api_id INT IDENTITY PRIMARY KEY,
-   api_key CHAR(32) NOT NULL,
-   permission_level INT NOT NULL
+	FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );

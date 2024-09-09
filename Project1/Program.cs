@@ -22,11 +22,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 // Map API endpoints
 app.MapControllers();

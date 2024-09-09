@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airports CRUD</title>
+</head>
+<body>
+
+    <!-- GET Request Form -->
+    <h3>GET Airport</h3>
+    <form id="getForm">
+        <label for="getAirportId">AirportId:</label>
+        <input type="number" id="getAirportId" name="AirportId">
+        <button type="button" onclick="submitGet()">Get Airport</button>
+    </form>
+    <pre id="getResult"></pre>
+
+    <!-- POST Request Form -->
+    <h3>POST Airport</h3>
+    <form id="postForm">
+        <label for="postAirportCode">AirportCode:</label>
+        <input type="text" id="postAirportCode" name="AirportCode">
+        <br>
+        <label for="postAirportName">AirportName:</label>
+        <input type="text" id="postAirportName" name="AirportName">
+        <br>
+        <label for="postCity">City:</label>
+        <input type="text" id="postCity" name="City">
+        <br>
+        <label for="postCountry">Country:</label>
+        <input type="text" id="postCountry" name="Country">
+        <br>
+        <label for="postImageURL">ImageURL:</label>
+        <input type="text" id="postImageURL" name="ImageURL">
+        <br>
+        <button type="button" onclick="submitPost()">Create Airport</button>
+    </form>
+    <pre id="postResult"></pre>
+
+    <!-- PUT Request Form -->
+    <h3>PUT Airport</h3>
+    <form id="putForm">
+        <label for="putAirportId">AirportId:</label>
+        <input type="number" id="putAirportId" name="AirportId">
+        <br>
+        <label for="putAirportCode">AirportCode:</label>
+        <input type="text" id="putAirportCode" name="AirportCode">
+        <br>
+        <label for="putAirportName">AirportName:</label>
+        <input type="text" id="putAirportName" name="AirportName">
+        <br>
+        <label for="putCity">City:</label>
+        <input type="text" id="putCity" name="City">
+        <br>
+        <label for="putCountry">Country:</label>
+        <input type="text" id="putCountry" name="Country">
+        <br>
+        <label for="putImageURL">ImageURL:</label>
+        <input type="text" id="putImageURL" name="ImageURL">
+        <br>
+        <button type="button" onclick="submitPut()">Update Airport</button>
+    </form>
+
+    <!-- DELETE Request Form -->
+    <h3>DELETE Airport</h3>
+    <form id="deleteForm">
+        <label for="deleteAirportId">AirportId:</label>
+        <input type="number" id="deleteAirportId" name="AirportId">
+        <br>
+        <button type="button" onclick="submitDelete()">Delete Airport</button>
+    </form>
+
+    <script>
+        async function submitGet() {
+            const airportId = document.getElementById('getAirportId').value;
+            try {
+                const response = await fetch(`/api/Airports/${airportId}`);
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('getResult').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('getResult').textContent = 'Error: ' + error;
+            }
+        }
+
+        async function submitPost() {
+            const airportCode = document.getElementById('postAirportCode').value;
+            const airportName = document.getElementById('postAirportName').value;
+            const city = document.getElementById('postCity').value;
+            const country = document.getElementById('postCountry').value;
+            const imageURL = document.getElementById('postImageURL').value;
+
+            try {
+                const response = await fetch('/api/Airports', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        AirportCode: airportCode,
+                        AirportName: airportName,
+                        City: city,
+                        Country: country,
+                        ImageURL: imageURL
+                    })
+                });
+
+                const data = response.ok ? await response.json() : await response.text();
+                document.getElementById('postResult').textContent = 'Airport created: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('postResult').textContent = 'Error: ' + error;
+            }
+        }
+        async function submitPut() {
+            const airportId = document.getElementById('putAirportId').value;
+            const airportCode = document.getElementById('putAirportCode').value;
+            const airportName = document.getElementById('putAirportName').value;
+            const city = document.getElementById('putCity').value;
+            const country = document.getElementById('putCountry').value;
+            const imageURL = document.getElementById('putImageURL').value;
+
+            try {
+                const response = await fetch(`/api/Airports/${airportId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        AirportId: airportId,
+                        AirportCode: airportCode,
+                        AirportName: airportName,
+                        City: city,
+                        Country: country,
+                        ImageURL: imageURL
+                    })
+                });
+
+                if (response.status === 204) {
+                    alert('Airport updated successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Airport updated successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+
+        async function submitDelete() {
+            const airportId = document.getElementById('deleteAirportId').value;
+
+            try {
+                const response = await fetch(`/api/Airports/${airportId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.status === 204) {
+                    alert('Airport deleted successfully');
+                } else if (response.ok) {
+                    const data = await response.json();
+                    alert('Airport deleted successfully: ' + JSON.stringify(data));
+                } else {
+                    const errorText = await response.text();
+                    alert('Error: ' + errorText);
+                }
+            } catch (error) {
+                alert('Error: ' + error);
+            }
+        }
+    </script>
+
+</body>
+</html>
